@@ -1,7 +1,6 @@
 package com.springboot.blog.service;
 
 import com.springboot.blog.paylaod.CommentDto;
-import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
@@ -11,4 +10,8 @@ public interface CommentService {
     List<CommentDto> getCommentsByPostId(long postId);
 
     CommentDto getCommentById(long postId, long commentId);
+
+    CommentDto updateCommentById(long postId, long commentId, CommentDto commentDto);
+
+    void deleteCommentById(long postId,long commentId);
 }

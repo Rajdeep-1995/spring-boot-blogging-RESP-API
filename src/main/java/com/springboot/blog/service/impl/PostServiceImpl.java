@@ -6,6 +6,7 @@ import com.springboot.blog.paylaod.PostDto;
 import com.springboot.blog.paylaod.PostResponse;
 import com.springboot.blog.respository.PostRepository;
 import com.springboot.blog.service.PostService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +21,8 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public PostDto createPost(PostDto postDto) {
@@ -88,20 +91,24 @@ public class PostServiceImpl implements PostService {
         postRepository.delete(foundPost);
     }
 
+    /*------------PostDto to Post entity-----------------*/
     private Post DtoToEntity(PostDto postDto){
-        Post post = new Post();
-        post.setTitle(postDto.getTitle());
-        post.setDescription(postDto.getDescription());
-        post.setContent(postDto.getContent());
+        Post post = modelMapper.map(postDto,Post.class);
+//        Post post = new Post();
+//        post.setTitle(postDto.getTitle());
+//        post.setDescription(postDto.getDescription());
+//        post.setContent(postDto.getContent());
         return post;
     }
 
+    /*------------Post entity to PostDto-----------------*/
     private PostDto entityToDto(Post post){
-        PostDto postResponse = new PostDto();
-        postResponse.setId(post.getId());
-        postResponse.setTitle(post.getTitle());
-        postResponse.setContent(post.getContent());
-        postResponse.setDescription(post.getDescription());
+        PostDto postResponse = modelMapper.map(post,PostDto.class);
+//        PostDto postResponse = new PostDto();
+//        postResponse.setId(post.getId());
+//        postResponse.setTitle(post.getTitle());
+//        postResponse.setContent(post.getContent());
+//        postResponse.setDescription(post.getDescription());
         return postResponse;
     }
 

@@ -8,6 +8,8 @@ import com.springboot.blog.paylaod.SignUpDto;
 import com.springboot.blog.respository.RoleRepository;
 import com.springboot.blog.respository.UserRespository;
 import com.springboot.blog.security.JwtTokenProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,14 +45,18 @@ public class AuthController {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    private final Logger logger = LoggerFactory.getLogger(AuthController.class);
+
     @PostMapping("/signin")
     public ResponseEntity<JwtAuthResponse> authanticateUser(@RequestBody LoginDto loginDto){
+
       Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsernameOrEmail(),
                 loginDto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         //get token from JwtTokenProvider
+
         String token = jwtTokenProvider.generateToken(authentication);
 
         return ResponseEntity.ok(new JwtAuthResponse(token));

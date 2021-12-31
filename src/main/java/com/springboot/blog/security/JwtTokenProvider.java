@@ -3,6 +3,8 @@ package com.springboot.blog.security;
 import com.springboot.blog.exception.BlogAPIException;
 import io.jsonwebtoken.*;
 //import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -19,25 +21,25 @@ public class JwtTokenProvider {
     @Value("${app.jwt.expiration-milliseconds}")
     private String jwtExpirationInMs;
 
-    //private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-
-
+    private final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
     /***** generating jwt token ******/
 
     public String generateToken(@NotNull Authentication authentication){
         String username = authentication.getName();
-        Date currentDate = new Date();
-        Date expireDate = new Date(currentDate.getTime()+jwtExpirationInMs);
+
+
 
         String token = Jwts.builder()
                 .setSubject(username)
-                .setIssuedAt(currentDate)
-                .setExpiration(expireDate)
-                .signWith(SignatureAlgorithm.HS384,jwtSecret)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis()+1000*60*60*24))
+                .signWith(SignatureAlgorithm.HS512,jwtSecret)
                 .compact();
 
+
         return token;
+
     }
 
     /******** accessing username by parsing jwt token *********/

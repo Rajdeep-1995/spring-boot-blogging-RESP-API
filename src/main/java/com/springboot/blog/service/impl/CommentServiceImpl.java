@@ -21,6 +21,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Autowired
     private CommentRepository commentRepository;
+
+
     @Autowired
     private PostRepository postRepository;
     @Autowired

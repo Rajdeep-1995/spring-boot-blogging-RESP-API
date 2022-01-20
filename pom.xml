@@ -14,7 +14,7 @@
 	<name>spring boot blog rest api</name>
 	<description>spring boot blog application rest api</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
